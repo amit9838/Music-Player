@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Music Player</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" integrity="sha512-PgQMlq+nqFLV4ylk1gwUOgm6CtIIXkKwaIHp/PAIWHzig/lKZSEGKEysh0TCVbHJXCLN7WetD8TFecIky75ZfQ==" crossorigin="anonymous" />
+	<link rel="stylesheet" type="text/css" href="styles.css">
+
+</head>
+<body>
+	<div class="main_div">
+<!--------------------- Music Container ----------------------->
+		<div class="music_container" id= "music_container">
+<!----------------------- Songs List -------------------------->
+			<div id="songs_list">
+				<div class="list_btn">
+					<h4 id = "now_playing">Now Playing</h4>
+					<i class="fa fa-chevron-down" id = "hide_list" onclick="hideList()"></i>
+				</div>
+				<div id="now_playing_card">
+					<div id="now_playing_thumb_div">
+						<img id="now_playing_thumb" src="" >
+					</div>
+					<div id="now_playing_info_div">
+						<p id="now_playing_title">Song</p>
+						<p id="now_playing_artist">Artist</p>
+					</div>
+				</div>
+				<div id="list_container">
+			</div>
+		</div>
+<!-------------------- Playback Song Info ---------------------->
+			<div id="song_info">
+			<h2 id="title">Baby</h2>
+			<h3 id="artist">Justin Biber</h3>
+			</div>
+			<div class="image_container" id="image_container">
+				<img id="album_art" src="Album-Art/No-album-art.png">
+			</div>
+			<audio id = "music" src="/home/stark/Drive:D/Code/Web/Music Player/Mp3/Attention - OkayMp3.Com.mp3"> </audio>
+
+<!---------------------- Extra Controls--------------------->
+			<div id="extra_controls">
+				<div id="set_time">
+					<select id="time_options" title="Select Time">
+						<option id="op1" value="5">5m</option>
+						<option id="op2" value="20">20m</option>
+						<option id="op3" value="30">30m</option>
+						<option id="op5" value="60">1h</option>
+						<option id="op6" value="120">2h</option>
+						<option id="op7" value="180">3h</option>
+
+					</select>
+				</div>
+
+
+				<div id="info">
+					<p class="track_det" id="track_info" title="Track Info" onclick="show_track_info()" >info</p>
+					<div id="info_card">
+						<img id="card_thumb" src="Album-Art/No-album-art.png">
+						<div id="track_info_container">
+						<p class="card_fields" >Song &#8226 <span class="track_values" id="tarck_title" >Title</span>
+</p> 
+						
+						<p class="card_fields" >Artist &#8226 <span class="track_values" id="track_artist" >Artist</span></p>
+						
+
+						<p class="card_fields" >File &#8226 <span class="track_values" id="file_name" >File Name</span></p>
+						<br><br>
+
+
+
+						<form id="myForm" class="form"> 
+							<input type="file" name = "inpFile" id="inpFile" multiple >	
+							<button type="submit" >Uplaod</button>
+						</form>
+						
+						</div>
+						<button id="track_info_container_button" onclick="hide_track_info()">OK</button>
+
+					</div>
+				</div>
+			</div>
+<!------------------------ progress bar ------------------------->
+			<div class="progress_container">
+				<div class="progress_duration_meter">
+					<div id="current_time">0:00</div>
+					<div id="total_duration">0:00</div>
+				</div>
+				<div id="progress_div" class ="progress_div">
+					<div class="progress" id="progress"></div>
+				</div>
+			</div>
+<!------------------------ Music Controls ----------------------->
+			<div class="music_controls">
+				<i class="fas fa-moon" id="modebtn" title="Set Timer" onclick="callTimefun()"></i>
+
+				<i class="fa fa-backward" aria-hidden="true"id="prev" title="Previous Track"></i>
+				<i class="fa fa-play-circle" aria-hidden="true" id="play" title="Play/Pause"></i>
+				<i class="fa fa-forward" aria-hidden="true" id="next" title="Next Track"></i>
+				<i class="fa fa-outdent" aria-hidden="true"id="show_list" onclick="showList()"></i>
+			</div>
+
+		</div>
+	</div>
+	<script type="text/javascript " src="songs_list.js"></script>
+	<script type="text/javascript" src="list_manager.js"></script>
+	<script type="text/javascript" src="add_file.js"></script>
+
+	<script type="text/javascript">
+		const music = document.querySelector("audio");
+		const img = document.getElementById("album_art");
+		const play = document.getElementById("play");
+		const title = document.getElementById("title");
+		const artist = document.getElementById("artist");
+		const prev = document.getElementById("prev");
+		const next = document.getElementById("next");
+		let progress = document.getElementById("progress");
+		let total_duration = document.getElementById("total_duration");
+		let currenttime = document.getElementById("current_time");
+
+
+
+		let isPlaying = false;
+
+//***************** Load songs****************************
+
+
+
+		const loadSongs = (songs) => {
+
+			title.textContent = songs.title;
+			artist.textContent = songs.artist;
+			music.src = "Mp3/" + songs.name;
+			// artist.textContent = music.size();
+			img.src= "Album-Art/"+ songs.album_art;
+			
+	}
+
+		// function fileSize() {
+		// 	let file = document.getElementById("music");
+
+		// 	if(file){
+		// 		alert(file.size);
+		// 	}
+		// 	else{
+		// 		alert("oh");
+		// 	}
+		// }
+		
+		songIndex =0;
+		loadSongs(songs[0]);
+
+
+
+		const trackInfo = (songs) => {
+
+		tarck_title = document.getElementById("tarck_title");
+		track_artist = document.getElementById("track_artist");
+		file_name = document.getElementById("file_name");
+		card_thumb = document.getElementById("card_thumb");
+		now_playing_title = document.getElementById("now_playing_title");
+		now_playing_artist = document.getElementById("now_playing_artist");
+		now_playing_thumb = document.getElementById("now_playing_thumb");
+
+		tarck_title.textContent = songs.title;
+		track_artist.textContent =songs.artist;
+		file_name.textContent = songs.name;
+		card_thumb.src= "Album-Art/"+ songs.album_art;
+
+		now_playing_title.textContent = songs.title;
+		now_playing_artist.textContent = songs.artist;
+		now_playing_thumb.src = "Album-Art/"+ songs.album_art;
+	}
+	trackInfo(songs[0]);
+
+// console.log(music.event);
+		// test(music);
+// ********************Play/Pause*****************************
+		const playMusic = () => {
+			isPlaying = true;
+			music.play();
+			play.classList.replace("fa-play-circle", "fa-pause-circle");
+			img.classList.add("anime");
+			title.classList.add("artistScroll");
+			trackInfo(songs[songIndex]);
+		};
+
+		const pauseMusic = () => {
+			isPlaying = false;
+			music.pause();
+			play.classList.replace("fa-pause-circle", "fa-play-circle");
+			img.classList.remove("anime");
+			title.classList.remove("artistScroll");
+		};
+
+		play.addEventListener("click", () => {
+				isPlaying ? pauseMusic() : playMusic();
+			});
+
+
+// ***************Next/Prev********************
+		const nextSong = () => {
+			
+			songIndex = (songIndex +1)%songs.length;;
+
+			loadSongs(songs[songIndex]);
+			pauseMusic();
+			setTimeout(playMusic, 50);
+			trackInfo(songs[songIndex]);
+		};
+
+		const prevSong = () =>{
+			pauseMusic();
+			songIndex = (songIndex -1 +songs.length)%songs.length;
+			loadSongs(songs[songIndex]);
+			setTimeout(playMusic, 50);
+	
+		}
+
+//*******************progress work***************************
+		music.addEventListener("timeupdate", (event) => {
+			const {currentTime, duration} = event.srcElement;
+			let progress_time = (currentTime/duration)*100;
+			progress.style.width = `${progress_time}%`;
+
+			// console.log(event);
+
+//*******************music Duration Update******************
+
+			let min_duration = Math.floor(duration/60);
+			let sec_duration = Math.floor(duration%60);
+
+			let min_durationC = Math.floor(currentTime/60);
+			let sec_durationC = Math.floor(currentTime%60);
+
+
+			if(sec_duration<10){
+				sec_duration = `0${sec_duration}`;
+			}
+
+			if(duration){
+			total_duration.textContent = `${min_duration}:${sec_duration}`;
+			}
+
+
+			if(sec_durationC<10)
+			{
+				sec_durationC = `0${sec_durationC}`;
+			}
+			currenttime.textContent = `${min_durationC}:${sec_durationC}`;
+			if(currentTime==duration){
+				nextSong();
+			}
+
+		});
+
+//**********************Move Progeress Bar***************************
+
+		progress_div.addEventListener("click", (event) =>{
+			
+			// const { duration } = music;
+			const duration = music.duration; //same as above;
+			let move_progress = (event.offsetX/event.srcElement.clientWidth)*duration;
+
+			music.currentTime = move_progress;
+		});
+
+			next.addEventListener("click" ,nextSong);
+			prev.addEventListener("click" ,prevSong);
+
+
+// extra_controls*********************
+// let timeoutID;
+function setTime(value){
+
+	setTimeout(pauseMusic, value*60*1000);
+}
+
+function callTimefun(){
+	let time = document.getElementById("time_options").value;
+	console.log(time);
+	setTime(time);
+	alert("Music will automatically stop after "+ time+" Minutes");
+	// console.log("nope");
+}
+
+
+function show_track_info(){
+	info_card = document.getElementById("info_card");
+	info_card.style.display= "block";
+	// setTimeout(hide_track_info, 20000)
+}
+
+
+
+function hide_track_info(){
+	info_card = document.getElementById("info_card");
+	info_card.style.display= "none";
+	
+}
+
+
+
+// ********************Queue List Work************************** 
+let list_thumb = document.getElementById("list_thumb");
+let list_title = document.getElementById("list_title");
+let list_artist = document.getElementById("list_artist");
+let hide_list = document.getElementById("hide_list");
+let show_list = document.getElementById("show_list");
+let songs_list = document.getElementById("songs_list");
+let image_container = document.getElementById("image_container");
+let song_info = document.getElementById("song_info");
+
+
+function hideList() {
+	songs_list.style.marginTop = "200%";
+	image_container.style.marginTop = "0%";
+	song_info.style.marginTop = "0rem";
+	image_container.style.opacity = "1";
+}
+
+
+function showList() {
+	console.log("show list");
+	songs_list.style.marginTop = "17%";
+	image_container.style.marginTop = "-200%";
+	song_info.style.marginTop = "-200%";
+	image_container.style.opacity = "0%";
+}
+
+
+
+//****************Creating Elements Dynamically***********************
+
+let list_parent = document.getElementById("list_container");
+
+function createMainDiv(index) {
+	let mainDiv = document.createElement("div");
+	mainDiv.classList.add("song");
+	mainDiv.id = "song"+index;
+	// console.log(div);
+	return mainDiv;
+}
+function createThumbnailDiv(i) {
+	let thumbDiv = document.createElement("div");
+	thumbDiv.classList.add("list_thumb_container");
+	thumbDiv.id = "thumbDiv"+i;
+	return thumbDiv;
+}
+
+function createDetaillDiv(i) {
+	let detailDiv = document.createElement("div");
+	detailDiv.classList.add("song_detail");
+	// thumb.src = "Album-Art/"+songs.album_art;
+	detailDiv.id = "song_detail"+i;
+	return detailDiv;
+}
+
+function createThumbnail(i){
+	let thumb = document.createElement("img");
+	thumb.classList = "thumb";
+	thumb.id = "thumb"+i;
+	return thumb;
+}
+
+
+function createSongDetailTitle(i){
+	let song_title = document.createElement("h4");
+	song_title.classList = "song_title";
+	song_title.id = "list_title"+i;
+	song_title.textContent = "Title";
+	return song_title;
+}
+
+
+function createSongDetailArtist(i){
+	let song_artist = document.createElement("h4");
+	song_artist.classList = "song_artist";
+	song_artist.id = "list_artist"+i;
+	song_artist.textContent = "ARTIST";
+	return song_artist;
+}
+
+
+for(let i = 0;i<songs.length; i++){
+	let div = createMainDiv(i);
+	let thumb_div = createThumbnailDiv(i);
+	let detailDiv = createDetaillDiv(i);
+	let thumb =createThumbnail(i);
+	let songTitle = createSongDetailTitle(i);
+	let songArtist = createSongDetailArtist(i);
+
+	list_parent.appendChild(div);
+	div.appendChild(thumb_div);
+	div.appendChild(detailDiv);
+	thumb_div.appendChild(thumb);
+	detailDiv.appendChild(songTitle);
+	detailDiv.appendChild(songArtist);
+
+}
+
+// ********************Load Songs to Lists*****************
+		
+for(let i = 0;i<songs.length; i++){
+	let songTitle = document.getElementById("list_title"+i);
+	let songArtist = document.getElementById("list_artist"+i);
+	let thumb = document.getElementById("thumb"+i);
+
+
+	const loadListSongs = (songs,i) => {
+
+		songTitle.textContent = songs.title;
+		songArtist.textContent = songs.artist;
+		thumb.src= "Album-Art/"+ songs.album_art;
+}
+	loadListSongs(songs[i],i);
+
+
+
+	for(let i=0;i<songs.length; i++){
+		selectedSong = document.getElementById("song"+i)
+		selectedSong.addEventListener("click", () => {
+		loadSongs(songs[i]);
+		
+		playMusic();
+		trackInfo(songs[i]);
+	});
+  }
+}
+
+</script>
+</body>
+</html>
