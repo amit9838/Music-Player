@@ -18,8 +18,6 @@
 * No APIs have been added. Player can be enhanced with APIs after little bit of tweaking.
 
 ## Screenshots
-![alt text](https://github.com/amit9838/Music-Player/blob/master/Screenshot_1.png)
-
-![alt text](https://github.com/amit9838/Music-Player/blob/master/Screenshot_2.png)
-
-![alt text](https://github.com/amit9838/Music-Player/blob/master/Screenshot_3.png)
+<img src="https://github.com/amit9838/Music-Player/blob/master/Screenshot_1.png" width="200" height="420"/>
+<img src="https://github.com/amit9838/Music-Player/blob/master/Screenshot_2.png" width="200" height="420"/>
+<img src="https://github.com/amit9838/Music-Player/blob/master/Screenshot_3.png" width="200" height="420"/>
