@@ -17,7 +17,7 @@
 #### *For Devs
 * No APIs have been added. Player can be enhanced with APIs after little bit of tweaking.
 
-
+## Screenshots
 ![alt text](https://github.com/amit9838/Music-Player/blob/master/Screenshot_1.png)
 
 ![alt text](https://github.com/amit9838/Music-Player/blob/master/Screenshot_2.png)
