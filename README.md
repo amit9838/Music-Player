@@ -13,6 +13,7 @@
 
 #### <> For Devs </>
 * No api is integrated in current version so, player can't fetch online songs.
+* If you wish to integrate api then, you are welcome.
 
 ## Screenshots
 <img src="https://github.com/amit9838/Music-Player/blob/master/Screenshot_1.png" width="340" height="720"/>
